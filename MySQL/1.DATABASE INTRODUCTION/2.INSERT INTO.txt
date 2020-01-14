@@ -1,0 +1,8 @@
+USE gamebar;
+INSERT INTO `employees` (`id`,`first_name`,`last_name`)
+VALUES( 1,'someone','someone');
+INSERT INTO `employees` (`id`,`first_name`,`last_name`)
+VALUES( 2,'someone1','someone1');
+INSERT INTO `employees` (`id`,`first_name`,`last_name`)
+VALUES( 3,'someone2','someone2');
+
