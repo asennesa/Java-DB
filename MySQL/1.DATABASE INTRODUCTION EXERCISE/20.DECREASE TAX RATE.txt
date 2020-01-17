@@ -1,0 +1,6 @@
+UPDATE `payments`
+SET
+`tax_rate` = tax_rate *0.97
+WHERE `tax_rate` > 0;
+SELECT tax_rate FROM payments;
+
