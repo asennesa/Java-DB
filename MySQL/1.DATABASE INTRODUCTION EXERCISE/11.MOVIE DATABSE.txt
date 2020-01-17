@@ -1,0 +1,36 @@
+Create table directors(
+ `id` INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+ `director_name` VARCHAR(200) NOT NULL,
+ `notes` VARCHAR(200) );
+ Create table genres (
+ `id` INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+ `genre_name` VARCHAR(200) NOT NULL,
+ `notes` VARCHAR(200) );
+  Create table categories (
+ `id` INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+ `category_name` VARCHAR(200) NOT NULL,
+ `notes` VARCHAR(200) );
+ CREATE TABLE movies (
+    `id` INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    `title` VARCHAR(200) NOT NULL,
+    `director_id` INT NOT NULL,
+    `copyright_year` YEAR ,
+    `length` INT ,
+    `genre_id` INT NOT NULL,
+    `category_id` INT NOT NULL,
+    `rating` INT NOT NULL,
+    `notes` VARCHAR(200)
+);
+
+INSERT INTO `directors`(`id`,`director_name`,`notes`) VALUES (1 ,'VASKO AZIS','ASD'),(2 ,'VAASKO AZIS','ASD'),
+(3 ,'VAAF234SKO AZIS','ASD'),(4 ,'VAAAA234KO AZIS','ASD'),(5 ,'VAAAAASKO AZIS','ASD');
+INSERT INTO `genres`(`id`,`genre_name`,`notes`) VALUES (1 ,'VASKO AZIS','ASD'),(2 ,'VAASKO AZIS','ASD'),
+(3 ,'VAAASKO AZIS','ASD'),(4 ,'VAAA423FASKO AZIS','ASD'),(5 ,'VAAAAAF23SKO AZIS','ASD');
+INSERT INTO `categories`(`id`,`category_name`,`notes`) VALUES (1 ,'VF23ASKO AZIS','ASD'),(2 ,'VAASKO AZIS','ASD'),
+(3 ,'VAAASKO AZIS','ASD'),(4 ,'VAAAASKO AZIS','ASD'),(5 ,'VAAAA234ASKO AZIS','ASD');
+INSERT INTO `movies`
+(`id`,`title`,`director_id`,`copyright_year`,`length`,`genre_id`,`category_id`,`rating`,`notes`)
+VALUES
+(1,'fir12stmovie',1,1999,120,1,1,5,'ASDDDF23DDDDDD'),(2,'firs32tmovie',1,1999,120,1,2,5,'ASDDDDF23DDDDD'),
+(3,'firstmo42vie',2,1999,120,1,1,5,'ASDDDDDDDDF23D'),(4,'firstmo424vie',1,1999,120,2,1,5,'ASDDDDDDDDD'),
+(5,'firstmo2323vie',4,1999,120,1,2,5,'ASDDDDDDDDD');

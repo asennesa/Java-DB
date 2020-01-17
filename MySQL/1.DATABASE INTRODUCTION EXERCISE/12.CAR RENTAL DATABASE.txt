@@ -1,0 +1,64 @@
+create table categories(
+`id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+`category`VARCHAR (50) NOT NULL,
+ `daily_rate` INT  NOT NULL,
+ `weekly_rate`INT NOT NULL,
+`monthly_rate`INT NOT NULL,
+`weekend_rate` INT NOT NULL
+);
+insert INTO `categories`(`id`,`category`,`daily_rate`,`weekly_rate`,`monthly_Rate`,`weekend_rate`)
+VALUES(1,'OFF-ROAD',1,2,3,4),
+(2,'OFF-WORLD',1,2,3,4),
+(3,'OFF-EVERYTHING',1,2,3,4);
+
+create table cars (
+`id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+`plate_number` VARCHAR(50) NOT NULL,
+`make` VARCHAR(50) NOT NULL,
+`model`VARCHAR(50) NOT NULL,
+`car_year`INT NOT NULL,
+`category_id`INT NOT NULL,
+`doors` INT NOT NULL,
+ `picture` BLOB,
+ `car_condition` VARCHAR(50),
+`available` bool
+);
+INSERT INTO `cars`
+(`id`,`plate_number`,`make`,`model`,`car_year`,`category_id`,`doors`,`picture`,`car_condition`,`available`)
+VALUES
+(1,'B5S5030G0','OPEL','AZIS',1999,2,4,null,'mint',true),
+(2,'B5S5030G0','OPEL','AZIS',1999,2,4,null,'mint',true),
+(3,'B5S5030G0','OPEL','AZIS',1999,2,4,null,'mint',true);
+
+  
+  create table employees(
+  `id`INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  `first_name` VARCHAR(50) NOT NULL,
+  `last_name` VARCHAR(50) NOT NULL,
+  `title`VARCHAR(50) NOT NULL,
+  `notes` TEXT
+  );
+  INSERT INTO `employees`(`id`,`first_name`,`last_name`,`title`,`notes`)
+  VALUES (1,'VASKO','AZIS','FOLKGDIVA','NSGOTGSESHERE'),
+  (2,'VASKO','AFZIS','FOSLKDIVA','NOTESHGERE'),
+  (3,'VASKO','AZVIS','FVOLKDIVA','NOSGTESHERE');
+create table customers(`id` INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+`driver_licence_number` VARCHAR(50) NOT NULL,`full_name`VARCHAR(200) NOT NULL,
+ `address`VARCHAR (200) NOT NULL, `city` VARCHAR(50) NOT NULL, `zip_code` INT NOT NULL, `notes` TEXT);
+INSERT INTO `customers`(`id`, `driver_licence_number`, `full_name`, `address`, `city`, `zip_code`, `notes`)
+VALUES(1,'P123GGV34S5GHD','VASIL AZIS VASKO','ASDFSGASFASD ASD DD123','MOGSKVA','1013000','AGSADDSD'),
+(2,'P12S3G34S5GHD','VASIL AZISGS VASKO','ASFDFSGSFASD ASD DD123','MOSKSVA','1010400','ASDDGSD'),
+(3,'P123G34S5SGHD','VASIL AASDZIS VASKO','ASDFSGSFSASD ASD DD123','MOSVKVA','1012000','ASSDSD');
+
+CREATE TABLE rental_orders(`id`INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+ `employee_id` INT NOT NULL,
+ `customer_id` INT NOT NULL,
+ `car_id` INT NOT NULL, `car_condition` VARCHAR(200) NOT NULL,
+ `tank_level` VARCHAR(100) NOT NULL, `kilometrage_start`INT NOT NULL, `kilometrage_end`INT NOT NULL,
+ `total_kilometrage`INT NOT NULL, `start_date` DATE NOT NULL, `end_date`DATE NOT NULL,
+ `total_days`INT NOT NULL, `rate_applied`DECIMAL(10,2) NOT NULL, `tax_rate`DECIMAL(10,2) NOT NULL, 
+ `order_status`VARCHAR(50), `notes` TEXT);
+ INSERT INTO `rental_orders`(`id`, `employee_id`, `customer_id`, `car_id`, `car_condition`, `tank_level`, `kilometrage_start`, `kilometrage_end`, `total_kilometrage`, `start_date`, `end_date`, `total_days`, `rate_applied`, `tax_rate`, `order_status`, `notes`)
+ VALUES(1,1,1,1,'ok','f',220000,225000,300000,'2019/02/03','2019/03/04',32,24.4,24.5,'completed','asd'),
+ (2,1,1,1,'ok','f',220000,225000,300000,'2019/02/03','2019/03/04',32,24.4,24.5,'completed','asd'),
+ (3,1,1,1,'ok','f',220000,225000,300000,'2019/02/03','2019/03/04',32,24.4,24.5,'completed','asd');

@@ -1,0 +1,15 @@
+Use minions;
+CREATE TABLE `people` (
+    `id` INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+    `name` VARCHAR(200) NOT NULL,
+    `picture` LONGBLOB,
+    `height` DECIMAL(10 , 2 ),
+    `weight` DECIMAL(10 , 2 ),
+    `gender` VARCHAR(1) NOT NULL,
+    `birthdate` DATE NOT NULL,
+    `biography` LONGTEXT
+);
+INSERT INTO `people`(`id`,`name`,`picture`,`height`,`weight`,`gender`,`birthdate`,`biography`)
+VALUES( 1,'azis',null,2.10,110.50,'f','1966/10/02',null),( 2,'azis',null,2.10,110.50,'f','1966/10/02',null),
+( 3,'azis',null,2.10,110.50,'f','1966/10/02',null),( 4,'azis',null,2.10,110.50,'f','1966/10/02',null),
+( 5,'azis',null,2.10,110.50,'f','1966/10/02',null);

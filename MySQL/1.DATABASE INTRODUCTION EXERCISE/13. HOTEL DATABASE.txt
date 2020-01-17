@@ -1,0 +1,85 @@
+
+CREATE TABLE employees (
+    `id` INT PRIMARY KEY NOT NULL ,
+    `first_name` VARCHAR(50) NOT NULL,
+    `last_name` VARCHAR(50) NOT NULL,
+    `title` VARCHAR(50) NOT NULL,
+    `notes` TEXT
+);
+INSERT INTO `employees`(`id`, `first_name`, `last_name`, `title`,`notes`)
+VALUES (1,'SOMEON5E','SOM1EONE','NO23BODY','txt1here'),
+ (2,'SOM4EONE','SOMEONE','NOBODY','txth2ere'),
+ (3,'SOME4ONE','SOMEONE','NOB4ODY','txth3re');
+CREATE TABLE customers (
+    `account_number` BIGINT NOT NULL PRIMARY KEY,
+    `first_name` VARCHAR(50) NOT NULL,
+    `last_name` VARCHAR(50) NOT NULL,
+    `phone_number` VARCHAR(50) NOT NULL,
+    `emergency_name` VARCHAR(50) NOT NULL,
+    `emergency_number` VARCHAR(50) NOT NULL,
+    `notes` TEXT
+);
+INSERT INTO `customers`(`account_number`, `first_name`, `last_name`, `phone_number`, `emergency_name`, `emergency_number`,`notes`)
+VALUES (1234,'ASD','DSA','0898532123','emergencynoone','089834256','lblablalbalb'),
+(1235,'ASD','DSA','0898532123','emergencynoone','0898342561','lblablalbalb'),
+(1236,'ASD','DSA','0898532123','emergencynoone','0898342561','lblablalbalb');
+CREATE TABLE room_status (`room_status` VARCHAR(50) PRIMARY KEY NOT NULL, `notes`TEXT);
+INSERT INTO `room_status` (`room_status`,`notes`)
+values('TAKEASDN','noteshere'),
+('TAKEFSAN','noteshere'),
+('TAKASDEASDN','noteshere');
+CREATE TABLE room_types (
+    `room_type` VARCHAR(50) PRIMARY KEY NOT NULL,
+    `notes` TEXT
+);
+INSERT INTO `room_types`(`room_type`,`notes`) VALUES ('4 beds','txthere'),('2 beds','txthere'),('6 beds','txthere');
+CREATE TABLE bed_types (
+    `bed_type` VARCHAR(50) PRIMARY KEY NOT NULL,
+    `notes` TEXT
+);
+INSERT INTO `bed_types`(`bed_type`,`notes`) VALUES ('4 23beds','txthere'),('2 bed523s','txthere'),('623 beds','txthere');
+CREATE TABLE rooms (
+    `room_number` INT PRIMARY KEY NOT NULL,
+    `room_type` VARCHAR(50) NOT NULL,
+    `bed_type` VARCHAR(50) NOT NULL,
+    `rate` DECIMAL(10 , 2 ) NOT NULL,
+    `room_status` VARCHAR(50) NOT NULL,
+    `notes` TEXT
+);
+ INSERT INTO `rooms`(`room_number`, `room_type`, `bed_type`, `rate`, `room_status`, `notes`)
+ VALUES ( 1,'4 beds','small',12.2,'FREE', 'NOTES HERE'),( 2,'4 beds','small',12.2,'FREE', 'NOTES HERE'),
+ ( 3,'4 beds','small',12.2,'FREE', 'NOTES HERE');
+ CREATE TABLE payments (
+    `id` INT PRIMARY KEY NOT NULL ,
+    `employee_id` INT NOT NULL,
+    `payment_date` DATE NOT NULL,
+    `account_number` BIGINT NOT NULL,
+    `first_date_occupied` DATE NOT NULL,
+    `last_date_occupied` DATE NOT NULL,
+    `total_days` INT NOT NULL,
+    `amount_charged` DECIMAL(10 , 2 ) NOT NULL,
+    `tax_rate` DECIMAL(10 , 2 ) NOT NULL,
+    `tax_amount` DECIMAL(10 , 2 ) NOT NULL,
+    `payment_total` DECIMAL(10 , 2 ) NOT NULL,
+    `notes` TEXT
+);
+ INSERT INTO `payments`
+(`id`,`employee_id`,`payment_date`,`account_number`,`first_date_occupied`,`last_date_occupied`,
+`total_days`,`amount_charged`,`tax_rate`,`tax_amount`,`payment_total`,`notes`)
+VALUES
+(1,2,'2019/03/10',1,'2019/03/08','2019/03/09',1,20.5,5.2,12.2,500.5,'asdmate'),
+(2,2,'2019/03/10',1,'2019/03/08','2019/03/09',1,20.5,5.2,12.2,500.5,'asdmate'),
+(3,2,'2019/03/10',1,'2019/03/08','2019/03/09',1,20.5,5.2,12.2,500.5,'asdmate');
+CREATE TABLE occupancies (
+    `id` INT NOT NULL PRIMARY KEY,
+    `employee_id` INT NOT NULL,
+    `date_occupied` DATE NOT NULL,
+    `account_number` BIGINT	 NOT NULL,
+    `room_number` INT NOT NULL,
+    `rate_applied` DECIMAL(10 , 2 )NOT NULL,
+    `phone_charge` DECIMAL(10 , 2 ) NOT NULL,
+    `notes` TEXT
+);
+ INSERT INTO occupancies(`id`, `employee_id`, `date_occupied`, `account_number`, `room_number`, `rate_applied`, `phone_charge`, `notes`)
+ values (1,2,'2019/03/10', 12,3,10.5,100.5,'txthere'),
+ (2,1,'2019/03/10', 12,1,10.5,100.5,'txthere'),(3,3,'2019/03/10', 12,2,10.5,100.5,'txthere');
