@@ -44,9 +44,41 @@ SELECT deposit_group,is_deposit_expired,AVG(deposit_interest) AS average_interes
 FROM wizzard_deposits WHERE deposit_start_date > '1985/01/01' GROUP BY deposit_group, is_deposit_expired
 ORDER BY deposit_group DESC,is_deposit_expired ASC;
 
-#13. Employees Minimum Salaries
-SELECT department_id ,MIN(salary) as minimum_salary FROM employees 
-WHERE department_id in(2,5,7) GROUP BY department_id ORDER BY department_id;
+# 13. Employees Minimum Salaries
+SELECT department_id ,MIN(salary) AS minimum_salary FROM employees 
+WHERE department_id IN(2,5,7) GROUP BY department_id ORDER BY department_id;
+
+# 14. Employees Average Salaries
+CREATE TABLE HighPaid AS Select * FROM employees WHERE salary > 30000 AND manager_id !=42;
+UPDATE `highpaid`
+SET`salary` = `salary` + 5000 WHERE department_id =1 ;
+SELECT 	department_id,AVG(salary) AS avg_salary FROM highpaid GROUP BY department_id ORDER BY department_id;
+
+# 15. Employees Maximum Salaries
+SELECT department_id,MAX(salary) AS max_salary FROM employees  GROUP BY department_id HAVING max_salary
+NOT BETWEEN 30000 AND 70000 ORDER BY department_id ASC;
+
+# 16. Employees Count Salaries
+SELECT COUNT(employee_id) FROM employees WHERE manager_id IS NULL ;
+
+# 17. 3rd Highest Salary*
+SELECT e.department_id ,
+(SELECT DISTINCT salary FROM employees WHERE department_id = e.department_id ORDER BY salary DESC LIMIT 2,1 )
+as third_highest_salary
+FROM employees AS e WHERE
+(SELECT DISTINCT salary FROM employees WHERE department_id = e.department_id ORDER BY salary DESC LIMIT 2,1 ) IS NOT NULL
+GROUP BY department_id ORDER BY department_id; 
+
+# 18. Salary Challenge**
+SELECT e.first_name,e.last_name,e.department_id FROM employees AS e 
+WHERE salary > (SELECT AVG(e2.salary) FROM employees AS e2 
+WHERE e2.department_id = e.department_id GROUP BY e2.department_id) ORDER BY department_id ,employee_id LIMIT 10 ;
+
+# 19. Departments Total Salaries
+SELECT  department_id,SUM(salary) AS total_salary FROM employees GROUP BY department_id ORDER BY department_id;
+
+
+
 
 
 
