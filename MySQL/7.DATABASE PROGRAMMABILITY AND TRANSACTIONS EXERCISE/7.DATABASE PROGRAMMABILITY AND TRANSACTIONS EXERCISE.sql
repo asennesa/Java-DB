@@ -80,14 +80,14 @@ DELIMITER $$
  CREATE PROCEDURE usp_get_holders_with_balance_higher_than(num INT)
  BEGIN
  SELECT first_name,last_name FROM account_holders AS ah JOIN accounts AS a ON ah.id =a.account_holder_id 
-GROUP BY ah.id HAVING SUM(a.balance) > num ORDER BY account_holder_id ASC;
+GROUP BY ah.id HAVING SUM(a.balance) > num ORDER BY account_holder_id ASC\;
 
  END $$
  
 # 10.Future Value Function
  DELIMITER $$
- CREATE FUNCTION ufn_calculate_future_value (sum DOUBLE(19,11) ,rate DOUBLE(19,11) ,years INT)
-RETURNS DOUBLE
+ CREATE FUNCTION ufn_calculate_future_value (sum DOUBLE(19,4) ,rate DOUBLE(19,4) ,years INT)
+RETURNS FIXED(19,4)
 DETERMINISTIC
 BEGIN
 DECLARE result DOUBLE(19,11) ;
@@ -96,3 +96,17 @@ SET result:=sum * POWER(1 + rate ,years);
 END $$
 
 SELECT ufn_calculate_future_value (1000,0.1, 5);
+
+# 11. Calculating Interest
+DELIMITER $$
+ CREATE PROCEDURE usp_calculate_future_value_for_account (acc_id INT,int_rate DOUBLE(19,4))
+ BEGIN
+ SELECT a.id AS account_id ,ah.first_name,ah.last_name,a.balance AS current_balance,
+ ufn_calculate_future_value (a.balance,int_rate, 5) AS balance_in_5_years
+ FROM accounts as a
+ JOIN account_holders as ah ON a.account_holder_id = ah.id
+ WHERE a.id =acc_id;
+ END $$
+ 
+ Call usp_calculate_future_value_for_account(1,0.1);
+
