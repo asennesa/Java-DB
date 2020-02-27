@@ -1,7 +1,4 @@
-import entities.Address;
-import entities.Employee;
-import entities.Project;
-import entities.Town;
+import entities.*;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -11,6 +8,7 @@ import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -71,11 +69,23 @@ public class Engine implements Runnable {
         //increaseSalaries();
 
         //Ex 11
-        try {
+      /*  try {
             removeTowns();
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+       */
+        //Ex 12
+       /* try {
+            findEmployeesByFirstName();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        */
+        //Ex 13
+        employeesMaximumSalaries();
 
     }
 
@@ -192,7 +202,7 @@ public class Engine implements Runnable {
         List<Project> projects = this.entityManager
                 .createQuery("SELECT p FROM Project AS p ORDER BY p.startDate DESC", Project.class)
                 .setMaxResults(10).getResultList().stream()
-                .sorted((p1,p2)->p1.getName().compareTo(p2.getName())).collect(Collectors.toList());
+                .sorted((p1, p2) -> p1.getName().compareTo(p2.getName())).collect(Collectors.toList());
 
         projects.forEach(e -> {
             try {
@@ -204,7 +214,7 @@ public class Engine implements Runnable {
                         , e.getName(), e.getDescription()
                         , e.getStartDate().toString()
                         , endDate));
-            }catch (NullPointerException npe){
+            } catch (NullPointerException npe) {
                 String endDate = "null";
                 System.out.println(String.format("Project name: %s" +
                                 "%n\tProject Description: %s" +
@@ -216,28 +226,25 @@ public class Engine implements Runnable {
             }
 
 
-
         });
 
     }
 
-    private void increaseSalaries(){
+    private void increaseSalaries() {
         List<Employee> employees = this.entityManager.createQuery("SELECT e FROM Employee AS e " +
                 "WHERE e.department.name " +
-                "IN('Engineering','Tool Design','Marketing','Information Services')",Employee.class).getResultList();
+                "IN('Engineering','Tool Design','Marketing','Information Services')", Employee.class).getResultList();
         this.entityManager.getTransaction().begin();
         for (Employee employee : employees) {
             BigDecimal twelvePercentIncrease = new BigDecimal("1.12");
             this.entityManager.detach(employee);
             employee.setSalary(employee.getSalary().multiply(twelvePercentIncrease));
             this.entityManager.merge(employee);
-            System.out.println(String.format("%s %s ($%.2f)",employee.getFirstName()
-                    ,employee.getLastName(),employee.getSalary()));
+            System.out.println(String.format("%s %s ($%.2f)", employee.getFirstName()
+                    , employee.getLastName(), employee.getSalary()));
         }
         this.entityManager.flush();
         this.entityManager.getTransaction().commit();
-
-
 
 
     }
@@ -245,16 +252,16 @@ public class Engine implements Runnable {
     private void removeTowns() throws IOException {
         System.out.println("Enter Town Name: ");
         String inputTown = reader.readLine();
-        Town town =  this.entityManager.createQuery("SELECT t FROM Town AS t WHERE t.name =:tname",Town.class)
-                .setParameter("tname",inputTown).getSingleResult();
+        Town town = this.entityManager.createQuery("SELECT t FROM Town AS t WHERE t.name =:tname", Town.class)
+                .setParameter("tname", inputTown).getSingleResult();
         int townId = town.getId();
-        List <Address> addresses = this.entityManager.createQuery("SELECT a FROM Address AS a " +
-                "WHERE a.town.id =:tId",Address.class).setParameter("tId",townId).getResultList();
+        List<Address> addresses = this.entityManager.createQuery("SELECT a FROM Address AS a " +
+                "WHERE a.town.id =:tId", Address.class).setParameter("tId", townId).getResultList();
 
         List<Employee> employees = this.entityManager.createQuery("Select e FROM Employee AS e" +
                 " JOIN Address as a ON a.id=e.address.id " +
                 "JOIN Town as t ON t.id=a.town.id " +
-                "WHERE t.id =:tId",Employee.class).setParameter("tId",townId).getResultList();
+                "WHERE t.id =:tId", Employee.class).setParameter("tId", townId).getResultList();
 
         this.entityManager.getTransaction().begin();
         for (Employee e : employees) {
@@ -269,11 +276,41 @@ public class Engine implements Runnable {
         this.entityManager.flush();
         this.entityManager.getTransaction().commit();
 
-        System.out.println(String.format("%d address in %s deleted",addresses.size(),town.getName()));
+        System.out.println(String.format("%d address in %s deleted", addresses.size(), town.getName()));
 
     }
 
+    private void findEmployeesByFirstName() throws IOException {
+        System.out.println("Enter pattern: ");
+        String pattern = reader.readLine();
+        List<Employee> employees = this.entityManager.createQuery("SELECT e FROM Employee AS e" +
+                " WHERE e.firstName LIKE :pattern", Employee.class)
+                .setParameter("pattern", pattern + "%").getResultList();
+        employees.forEach(e -> System.out.println(String.format("%s %s - %s - ($%.2f)"
+                , e.getFirstName(), e.getLastName(), e.getJobTitle(), e.getSalary())));
 
+    }
+
+    private void employeesMaximumSalaries() {
+        List<Department> departments = this.entityManager
+                .createQuery("SELECT d FROM Department as d JOIN Employee as e ON e.department.id = d.id" +
+                        " GROUP BY d.id HAVING MAX(e.salary) NOT BETWEEN 30000 AND 70000", Department.class).getResultList();
+        List<String> result = departments.stream()
+                .map(department -> {
+                    BigDecimal maxSalary = department.getEmployees()
+                            .stream()
+                            .map(Employee::getSalary)
+                            .max(Comparator.naturalOrder())
+                            .orElse(BigDecimal.valueOf(0));
+
+                    return String.format("%s %s",
+                            department.getName(),
+                            maxSalary);
+                }).collect(Collectors.toList());
+        result.forEach(r-> System.out.println(r));
+    }
 
 
 }
+
+
