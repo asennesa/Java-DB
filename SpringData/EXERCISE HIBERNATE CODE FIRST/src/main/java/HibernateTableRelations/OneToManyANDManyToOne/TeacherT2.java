@@ -26,7 +26,7 @@ public class TeacherT2 extends PersonT2 {
         this.speciality = speciality;
     }
 
-    @OneToMany(mappedBy = "name", targetEntity = CourseT2.class)
+    @OneToMany(mappedBy = "teacher", targetEntity = CourseT2.class)
     public Set<CourseT2> getCourses() {
         return courses;
     }
