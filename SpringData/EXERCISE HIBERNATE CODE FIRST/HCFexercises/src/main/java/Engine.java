@@ -1,5 +1,6 @@
-import relationsExercise.Course;
-import relationsExercise.Teacher;
+
+
+import entities.UniversitySystem.Teacher;
 
 import javax.persistence.EntityManager;
 
@@ -14,6 +15,7 @@ public class Engine implements Runnable {
     public void run() {
 
     }
+
 
 
 }
