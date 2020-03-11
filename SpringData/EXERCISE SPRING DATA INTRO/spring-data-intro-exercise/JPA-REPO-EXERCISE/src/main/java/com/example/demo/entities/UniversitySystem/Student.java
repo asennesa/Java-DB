@@ -31,7 +31,7 @@ public class Student extends Person {
         this.attendance = attendance;
     }
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "courses_students"
             ,joinColumns = @JoinColumn(name = "student_id",referencedColumnName = "id")
     ,inverseJoinColumns = @JoinColumn(name = "course_id",referencedColumnName = "id"))

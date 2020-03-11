@@ -12,4 +12,8 @@ import java.util.List;
 public interface CourseRepo extends JpaRepository<Course,Long> {
 
     List<Course> findAllByStartDateAfter(LocalDateTime localDateTime);
+
+    List<Course> findAllByStartDateBeforeOrStartDateAfter(LocalDateTime before,LocalDateTime after);
+
+    List<Course> findAllByStartDateBefore(LocalDateTime localDateTime);
 }

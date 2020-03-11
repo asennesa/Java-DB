@@ -26,4 +26,19 @@ public class CourseServiceImpl implements CourseService {
 
         return this.courseRepo.findAllByStartDateAfter(startDate1);
     }
+
+    @Override
+    public List<Course> getAllCoursesStarterBeforeAndAfter(int year) {
+        LocalDateTime before = LocalDateTime.of(year,1,1,0,0);
+        LocalDateTime after = LocalDateTime.of(year,12,31,0,0);
+
+        return this.courseRepo.findAllByStartDateBeforeOrStartDateAfter(before,after);
+    }
+
+    @Override
+    public List<Course> getAllByStartDateBefore(String date) {
+        LocalDateTime localDateTime = LocalDateTime.parse(date,DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+        // FORMATTER WONT WORK ! Change to LocalDate instead of LocalDateTime.
+        return this.courseRepo.findAllByStartDateBefore(localDateTime);
+    }
 }
