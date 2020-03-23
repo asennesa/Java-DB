@@ -5,7 +5,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "sales")
 public class Sale extends BaseEntity {
-    private int discount;
+    private Double discount;
     private Customer customer;
     private Car car;
 
@@ -14,13 +14,14 @@ public class Sale extends BaseEntity {
     }
 
     @Column(name = "discounts")
-    public int getDiscount() {
+    public Double getDiscount() {
         return discount;
     }
 
-    public void setDiscount(int discount) {
+    public void setDiscount(Double discount) {
         this.discount = discount;
     }
+
     @OneToOne
     public Car getCar() {
         return car;
@@ -29,6 +30,7 @@ public class Sale extends BaseEntity {
     public void setCar(Car car) {
         this.car = car;
     }
+
     @ManyToOne
     public Customer getCustomer() {
         return customer;

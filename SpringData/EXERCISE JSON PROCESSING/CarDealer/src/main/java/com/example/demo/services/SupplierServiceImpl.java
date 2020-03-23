@@ -8,10 +8,13 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import javax.validation.ConstraintViolation;
 import java.util.Arrays;
+import java.util.Random;
 
 @Service
+@Transactional
 public class SupplierServiceImpl implements SupplierService {
     private final SupplierRepository supplierRepository;
     private final ModelMapper modelMapper;
@@ -44,6 +47,14 @@ public class SupplierServiceImpl implements SupplierService {
                     }
                 } );
 
+    }
+
+    @Override
+    public Supplier getRandomSupplier() {
+        Random random = new Random();
+        long randomId = random
+                .nextInt((int) this.supplierRepository.count())+1;
+        return this.supplierRepository.getOne(randomId);
     }
 }
 
