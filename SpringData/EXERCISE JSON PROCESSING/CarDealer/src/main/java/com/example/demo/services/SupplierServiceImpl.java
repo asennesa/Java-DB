@@ -2,6 +2,7 @@ package com.example.demo.services;
 
 import com.example.demo.entities.Supplier;
 import com.example.demo.models.dtos.SupplierSeedDto;
+import com.example.demo.models.dtos.SupplierWriteDto;
 import com.example.demo.repositories.SupplierRepository;
 import com.example.demo.utils.ValidationUtil;
 import org.modelmapper.ModelMapper;
@@ -11,7 +12,9 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import javax.validation.ConstraintViolation;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -55,6 +58,19 @@ public class SupplierServiceImpl implements SupplierService {
         long randomId = random
                 .nextInt((int) this.supplierRepository.count())+1;
         return this.supplierRepository.getOne(randomId);
+    }
+
+    @Override
+    public List<SupplierWriteDto> findAllLocalSuppliers() {
+        return this.supplierRepository.findAllByIsImporterFalse().stream()
+                .map(e->{
+                    SupplierWriteDto supplierWriteDto =
+                            this.modelMapper.map(e,SupplierWriteDto.class);
+
+                    supplierWriteDto.setPartsCount(e.getParts().size());
+                    return supplierWriteDto;
+
+                }).collect(Collectors.toList());
     }
 }
 

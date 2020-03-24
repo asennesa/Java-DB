@@ -2,6 +2,7 @@ package com.example.demo.entities;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @Entity
 @Table(name = "customers")
@@ -11,6 +12,7 @@ public class Customer extends BaseEntity {
     private String name;
     private LocalDateTime dateOfBirth;
     private boolean isYoungDriver;
+    private Set<Sale> sales;
 
 
     public Customer() {
@@ -44,5 +46,12 @@ public class Customer extends BaseEntity {
         isYoungDriver = youngDriver;
     }
 
+    @OneToMany(mappedBy = "customer",fetch = FetchType.EAGER)
+    public Set<Sale> getSales() {
+        return sales;
+    }
 
+    public void setSales(Set<Sale> sales) {
+        this.sales = sales;
+    }
 }

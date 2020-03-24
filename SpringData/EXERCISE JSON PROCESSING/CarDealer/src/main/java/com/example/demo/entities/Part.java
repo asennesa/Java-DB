@@ -39,7 +39,7 @@ public class Part extends BaseEntity {
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
-    @ManyToMany(mappedBy = "parts")
+    @ManyToMany(mappedBy = "parts",fetch = FetchType.EAGER)
     public Set<Car> getCars() {
         return cars;
     }

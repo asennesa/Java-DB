@@ -2,7 +2,10 @@ package com.example.demo.services;
 
 import com.example.demo.entities.Car;
 import com.example.demo.entities.Supplier;
+import com.example.demo.models.dtos.CarAndPartsDto;
 import com.example.demo.models.dtos.CarSeedDto;
+import com.example.demo.models.dtos.CarWriteDto;
+import com.example.demo.models.dtos.PartDto;
 import com.example.demo.repositories.CarRepository;
 import com.example.demo.utils.ValidationUtil;
 import org.modelmapper.ModelMapper;
@@ -11,9 +14,8 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import javax.validation.ConstraintViolation;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Random;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -67,5 +69,36 @@ public class CarServiceImpl implements CarService {
         long randomId = random
                 .nextInt((int) this.carRepository.count())+1;
         return this.carRepository.getOne(randomId);
+    }
+
+    @Override
+    public List<CarWriteDto> findByMakeOrderByModelDistance() {
+        return this.carRepository.findByMakeOrderByModelAscTravelledDistanceDesc("Toyota").stream()
+                .map(e->{
+                    CarWriteDto carWriteDto = this.modelMapper.map(e,CarWriteDto.class);
+                    return carWriteDto;
+
+                }).collect(Collectors.toList());
+
+    }
+
+    @Override
+    @Transactional
+    public List<CarAndPartsDto> findAllCarsWithParts() {
+        List<CarAndPartsDto> list= this.carRepository.findAll().stream()
+                .map(e->{
+                    CarAndPartsDto carAndPartsDto = new CarAndPartsDto();
+                    carAndPartsDto.setCar(this.modelMapper.map(e,CarSeedDto.class));
+                    Set<PartDto> partDtoSet  = new HashSet<>();
+                    e.getParts().forEach(p->{
+                        partDtoSet.add(this.modelMapper.map(p,PartDto.class));
+                    });
+                    carAndPartsDto.setParts(partDtoSet);
+                    return carAndPartsDto;
+
+                }).collect(Collectors.toList());
+        System.out.println();
+        return list;
+
     }
 }

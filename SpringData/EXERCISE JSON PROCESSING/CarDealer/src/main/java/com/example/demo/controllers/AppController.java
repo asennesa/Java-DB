@@ -2,10 +2,8 @@ package com.example.demo.controllers;
 
 
 import com.example.demo.constants.GlobalConstants;
-import com.example.demo.models.dtos.CarSeedDto;
-import com.example.demo.models.dtos.CustomerSeedDto;
-import com.example.demo.models.dtos.PartSeedDto;
-import com.example.demo.models.dtos.SupplierSeedDto;
+import com.example.demo.entities.Customer;
+import com.example.demo.models.dtos.*;
 import com.example.demo.services.*;
 import com.example.demo.utils.FileUtil;
 import com.google.gson.Gson;
@@ -14,6 +12,8 @@ import org.springframework.stereotype.Component;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
+import java.util.List;
 
 import static com.example.demo.constants.GlobalConstants.SUPPLIERS_FILE_PATH;
 
@@ -40,12 +40,52 @@ public class AppController implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        this.seedSuppliers();
-        this.seedParts();
-        this.seedCars();
-        this.seedCustomers();
-        this.seedSales();
+//        this.seedSuppliers();
+//        this.seedParts();
+//        this.seedCars();
+//        this.seedCustomers();
+//        this.seedSales();
+//        this.findAllByDateOfBirth();
+//        this.findToyotaCars();
+//        this.findSuppliersThatDoNotImportPartsFromAbroad();
+//        this.findCarsAndParts();
+        this.findCustomerAndSales();
+    }
 
+    private void findCustomerAndSales() throws IOException {
+        List<CustomerSalesDataDto> customerSalesDataDtosthis=this.customerService.findAllCustomersWithSalesData(0);
+        String json = this.gson.toJson(customerSalesDataDtosthis);
+        this.fileUtil.write(json,GlobalConstants.EX5_FILE_PATH);
+
+    }
+
+    private void findCarsAndParts() throws IOException {
+        List<CarAndPartsDto> carAndPartsDtos = this.carService.findAllCarsWithParts();
+        System.out.println();
+        String json = this.gson.toJson(carAndPartsDtos);
+        this.fileUtil.write(json,GlobalConstants.EX4_FILE_PATH);
+
+    }
+
+    private void findSuppliersThatDoNotImportPartsFromAbroad() throws IOException {
+        List<SupplierWriteDto> dtos = this.supplierService.findAllLocalSuppliers();
+        String json = this.gson.toJson(dtos);
+        this.fileUtil.write(json,GlobalConstants.EX3_FILE_PATH);
+
+    }
+
+    private void findToyotaCars() throws IOException {
+        List<CarWriteDto> carWriteDtos = this.carService.findByMakeOrderByModelDistance();
+        String json = this.gson.toJson(carWriteDtos);
+        this.fileUtil.write(json,GlobalConstants.EX2_FILE_PATH);
+
+    }
+
+    private void findAllByDateOfBirth() throws IOException {
+        List<CustomerWriteDto> customers = this.customerService.findAllByBirthDateOrderedAsc();
+        String json =this.gson.toJson(customers);
+        System.out.println();
+        this.fileUtil.write(json,GlobalConstants.EX1_FILE_PATH);
     }
 
     private void seedSales() {
@@ -77,4 +117,6 @@ public class AppController implements CommandLineRunner {
                 this.gson.fromJson(new FileReader(SUPPLIERS_FILE_PATH), SupplierSeedDto[].class);
         this.supplierService.seedSuppliers(dtos);
     }
+
+
 }
